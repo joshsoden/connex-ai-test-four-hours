@@ -7,7 +7,7 @@ const port = 5001;
 app.use(cors());
 
 app.get('/time', (req, res) => {
-    res.send('52183098');
+    res.send(Date.now().toString());
 });
 
 app.get('/metrics', (req, res) => {
