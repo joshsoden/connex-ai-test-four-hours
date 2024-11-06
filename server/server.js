@@ -1,10 +1,20 @@
+const cors = require('cors');
 const express = require('express');
 
 const app = express();
 const port = 5001;
 
-app.get('/', (req, res) => {
-    res.send('Node.js backend');
+app.use(cors());
+
+app.get('/time', (req, res) => {
+    res.send('52183098');
+});
+
+app.get('/metrics', (req, res) => {
+    res.send(JSON.stringify({
+        resposneTime: 500102,
+        responseMessage: "hello there"
+    }));
 });
 
 app.listen(port, () => {

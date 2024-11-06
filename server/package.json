@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.1",
-    "express-prometheus-middleware": "^1.2.0"
+    "express-prometheus-middleware": "^1.2.0",
+    "nodemon": "^3.1.7"
   }
 }

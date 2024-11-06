@@ -1,7 +1,23 @@
-import logo from './logo.svg';
+import React, {useState, useEffect} from "react";
 import './App.css';
 
 function App() {
+
+  const [serverTime, setServerTime] = useState(null);
+  const [serverMetrics, setServerMetrics] = useState(null);
+
+  useEffect(() => {
+    fetch('http://localhost:5001/time/')
+      .then(response => response.text())
+      .then(data => setServerTime(data))
+  }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:5001/metrics/')
+      .then(res => res.text())
+      .then(data => setServerMetrics(data))
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -12,7 +28,7 @@ function App() {
         <section className="light">
           <div className="content">
             <h2>Server Information</h2>
-            <p>Server time: 237891273</p>
+            <p>Server time: {serverTime}</p>
             <p className="large">00:00:00</p>
           </div>
         </section>
@@ -20,9 +36,8 @@ function App() {
         <section className="dark">
           <div className="content">
             <h2>Server response</h2>
-            <div class="code-block">
-              <p>responseTime: 1200</p>
-              <p>resposneContent: hello</p>
+            <div className="code-block">
+              <p>{serverMetrics}</p>
             </div>
           </div>
         </section>
