@@ -8,6 +8,7 @@ app.use(cors());
 
 app.get('/time', (req, res) => {
     let headers = req.headers;
+    console.log(headers);
     if (headers.authorization && headers.authorization == "mysecrettoken") {
         res.send(Date.now().toString());
     } else {
