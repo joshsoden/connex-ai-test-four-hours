@@ -1,7 +1,9 @@
+const Ajv = require('ajv');
 const cors = require('cors');
 const express = require('express');
 require('dotenv').config();
 
+const ajv = new Ajv();
 const app = express();
 const port = 5001;
 
