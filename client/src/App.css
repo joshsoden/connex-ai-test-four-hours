@@ -18,11 +18,12 @@ main {
   
   section {
     height: 100%;
-    width: 100%;
+    width: calc(100% - 128px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0 64px;
 
     &.dark {
       background: darkgray;
@@ -36,8 +37,13 @@ main {
       background: black;
       color: white;
       padding: 24px;
-      font-family: 'Courier New', Courier, monospace;
-      font-weight: bold;
+      
+
+      p {
+        font-size: 12px;
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: bold;
+      }
     }
   }
 }
