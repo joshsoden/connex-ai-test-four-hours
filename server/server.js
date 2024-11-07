@@ -3,6 +3,8 @@ const cors = require('cors');
 const express = require('express');
 require('dotenv').config();
 
+const config = require('./config.js');
+
 const ajv = new Ajv();
 const app = express();
 const port = 5001;
@@ -13,14 +15,15 @@ app.use((req, res, next) => {
     console.log('Time:', Date.now());
     let headers = req.headers;
     if (headers.authorization && headers.authorization == process.env.REACT_APP_ACCESS_TOKEN) {
-        next()
+        next();
     } else {
         res.send(403);
     }
 });
 
 app.get('/time', (req, res, next) => {
-    res.send(Date.now().toString());
+    let timeObj = {epoch: Date.now()};
+    res.send(ajv.validate(config.schema, timeObj) ? JSON.stringify(timeObj) : 422);
 });
 
 app.get('/metrics', (req, res) => {
