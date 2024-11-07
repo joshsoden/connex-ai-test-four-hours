@@ -9,7 +9,10 @@ function App() {
   useEffect(() => {
     fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
       .then(response => response.text())
-      .then(data => setServerTime(data))
+      .then((data) => {
+        let epochTime = JSON.parse(data).epoch;
+        setServerTime(epochTime);
+      })
   }, []);
 
 useEffect(() => {
