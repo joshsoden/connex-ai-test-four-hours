@@ -7,7 +7,7 @@ function App() {
   const [serverMetrics, setServerMetrics] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5001/time/')
+    fetch('http://localhost:5001/time/', {headers: {authorization: "mysecrettoken"}})
       .then(response => response.text())
       .then(data => setServerTime(data))
   }, []);
