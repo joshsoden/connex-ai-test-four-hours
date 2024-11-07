@@ -1,5 +1,6 @@
 const cors = require('cors');
 const express = require('express');
+require('dotenv').config();
 
 const app = express();
 const port = 5001;
@@ -9,7 +10,7 @@ app.use(cors());
 app.use((req, res, next) => {
     console.log('Time:', Date.now());
     let headers = req.headers;
-    if (headers.authorization && headers.authorization == "mysecrettoken") {
+    if (headers.authorization && headers.authorization == process.env.REACT_APP_ACCESS_TOKEN) {
         next()
     } else {
         res.send(403);
