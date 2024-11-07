@@ -21,7 +21,7 @@ app.use((req, res, next) => {
     }
 });
 
-app.get('/time', (req, res, next) => {
+app.get('/time', (req, res) => {
     let timeObj = {epoch: Date.now()};
     res.send(ajv.validate(config.schema, timeObj) ? JSON.stringify(timeObj) : 422);
 });
