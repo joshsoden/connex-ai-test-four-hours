@@ -6,14 +6,18 @@ const port = 5001;
 
 app.use(cors());
 
-app.get('/time', (req, res) => {
+app.use((req, res, next) => {
+    console.log('Time:', Date.now());
     let headers = req.headers;
-    console.log(headers);
     if (headers.authorization && headers.authorization == "mysecrettoken") {
-        res.send(Date.now().toString());
+        next()
     } else {
         res.send(403);
     }
+});
+
+app.get('/time', (req, res, next) => {
+    res.send(Date.now().toString());
 });
 
 app.get('/metrics', (req, res) => {

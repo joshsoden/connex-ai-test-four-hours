@@ -8,13 +8,12 @@ function App() {
 
   useEffect(() => {
     fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
-    // fetch('http://localhost:5001/time/', {headers: {authorization: "mysecrettoken"}})
       .then(response => response.text())
       .then(data => setServerTime(data))
   }, []);
 
-  useEffect(() => {
-    fetch('http://localhost:5001/metrics/')
+useEffect(() => {
+    fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
       .then(res => res.text())
       .then(data => setServerMetrics(data))
   }, []);
