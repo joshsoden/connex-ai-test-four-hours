@@ -4,7 +4,7 @@ import './App.css';
 function App() {
 
   const [serverTime, setServerTime] = useState(null);
-  const [serverMetrics, setServerMetrics] = useState(null);
+  const [serverMetrics, setServerMetrics] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
@@ -15,11 +15,30 @@ function App() {
       })
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
+    function parseMetrics(metrics) {
+      let parsedData = convertMetricsToArray(metrics);
+      parsedData = filterEmptyStringsFromArray(parsedData);
+      parsedData = filterCommentsFromArray(parsedData);
+      return parsedData;
+    }
+
     fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
       .then(res => res.text())
-      .then(data => setServerMetrics(data))
+      .then(data => setServerMetrics(parseMetrics(data)))
   }, []);
+
+  const convertMetricsToArray = (metrics) => {
+    return metrics.split("\n");
+  }
+
+  const filterEmptyStringsFromArray = (array) => {
+    return array.filter((str) => str.length > 0);
+  }
+
+  const filterCommentsFromArray = (array) => {
+    return array.filter((str) => str[0] !== "#");
+  }
 
   return (
     <div className="App">
@@ -40,7 +59,9 @@ useEffect(() => {
           <div className="content">
             <h2>Server response</h2>
             <div className="code-block">
-              <p>{serverMetrics}</p>
+              {serverMetrics.map((metric) => (
+                <p>{metric}</p>
+              ))}
             </div>
           </div>
         </section>

@@ -13,6 +13,7 @@ const port = 5001;
 app.use(cors());
 
 app.use(promMid({
+    // TODO: Store as sepaate file,  export as JS object
     metricsPath: '/metrics',
     collectDefaultMetrics: true,
     includeMethod: true,
