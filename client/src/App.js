@@ -4,7 +4,7 @@ import './App.css';
 function App() {
 
   const [serverTime, setServerTime] = useState(null);
-  const [serverMetrics, setServerMetrics] = useState(null);
+  const [serverMetrics, setServerMetrics] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
