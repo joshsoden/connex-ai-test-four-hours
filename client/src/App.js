@@ -62,7 +62,9 @@ function App() {
           <div className="content">
             <h2>Server response</h2>
             <div className="code-block">
-              <p>{serverMetrics}</p>
+              {serverMetrics.map((metric) => (
+                <p>{metric}</p>
+              ))}
             </div>
           </div>
         </section>
