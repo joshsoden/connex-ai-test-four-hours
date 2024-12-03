@@ -15,11 +15,33 @@ function App() {
       })
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
     fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
       .then(res => res.text())
-      .then(data => setServerMetrics(data))
+      .then((data) => {
+        const metrics = parseMetrics(data);
+        setServerMetrics(metrics);
+      })
   }, []);
+
+  const parseMetrics = (metrics) => {
+    let parsedData = convertMetricsToArray(metrics);
+    parsedData = filterEmptyStringsFromArray(parsedData);
+    parsedData = filterCommentsFromArray(parsedData);
+    return parsedData;
+  }
+
+  const convertMetricsToArray = (metrics) => {
+    return metrics.split("\n");
+  }
+
+  const filterEmptyStringsFromArray = (array) => {
+    return array.filter((str) => str.length > 0);
+  }
+
+  const filterCommentsFromArray = (array) => {
+    return array.filter((str) => str[0] !== "#");
+  }
 
   return (
     <div className="App">
