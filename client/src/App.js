@@ -22,7 +22,7 @@ function App() {
         const metrics = parseMetrics(data);
         setServerMetrics(metrics);
       })
-  }, []);
+  }, []); // TODO: Sort out dependency issue here w/ parseMetrics()
 
   const parseMetrics = (metrics) => {
     let parsedData = convertMetricsToArray(metrics);
