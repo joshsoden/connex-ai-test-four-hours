@@ -25,9 +25,7 @@ function App() {
 
     fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
       .then(res => res.text())
-      .then((data) => {
-        setServerMetrics(parseMetrics(data));
-      })
+      .then(data => setServerMetrics(parseMetrics(data)))
   }, []);
 
   const convertMetricsToArray = (metrics) => {
