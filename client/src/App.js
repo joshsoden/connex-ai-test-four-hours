@@ -16,20 +16,19 @@ function App() {
   }, []);
 
   useEffect(() => {
+    function parseMetrics(metrics) {
+      let parsedData = convertMetricsToArray(metrics);
+      parsedData = filterEmptyStringsFromArray(parsedData);
+      parsedData = filterCommentsFromArray(parsedData);
+      return parsedData;
+    }
+
     fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
       .then(res => res.text())
       .then((data) => {
         setServerMetrics(parseMetrics(data));
       })
-      // FIXME: Sort out dependency issue with new method
   }, []);
-
-  const parseMetrics = (metrics) => {
-    let parsedData = convertMetricsToArray(metrics);
-    parsedData = filterEmptyStringsFromArray(parsedData);
-    parsedData = filterCommentsFromArray(parsedData);
-    return parsedData;
-  }
 
   const convertMetricsToArray = (metrics) => {
     return metrics.split("\n");
