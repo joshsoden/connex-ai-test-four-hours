@@ -19,10 +19,10 @@ function App() {
     fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
       .then(res => res.text())
       .then((data) => {
-        const metrics = parseMetrics(data);
-        setServerMetrics(metrics);
+        setServerMetrics(parseMetrics(data));
       })
-  }, []); // TODO: Sort out dependency issue here w/ parseMetrics()
+      // FIXME: Sort out dependency issue with new method
+  }, []);
 
   const parseMetrics = (metrics) => {
     let parsedData = convertMetricsToArray(metrics);
