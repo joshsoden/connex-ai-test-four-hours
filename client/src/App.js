@@ -5,37 +5,38 @@ function App() {
 
   const [serverTime, setServerTime] = useState(null);
   const [serverMetrics, setServerMetrics] = useState([]);
-  const [requestTimer, setRequestTimer] = useState();
+  const [requestTimer, setRequestTimer] = useState();  
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
-        .then(response => response.text())
-        .then((data) => {
-          let epochTime = JSON.parse(data).epoch;
-          setServerTime(epochTime);
-        })
+      retrieveServerTime();
+      retrieveServerMetrics();
     }, 5000);
-    
+
     return () => clearInterval(intervalId);
   }, []);
 
-  useEffect(() => {
-    function parseMetrics(metrics) {
-      let parsedData = convertMetricsToArray(metrics);
+  const retrieveServerTime = () => {
+    fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
+    .then(response => response.text())
+    .then((data) => {
+      let epochTime = JSON.parse(data).epoch;
+      setServerTime(epochTime);
+    })
+  }
+
+  const retrieveServerMetrics = () => {
+    fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
+        .then(res => res.text())
+        .then(data => setServerMetrics(parseMetrics(data)));
+  }
+
+  const parseMetrics = (metrics) => {
+    let parsedData = convertMetricsToArray(metrics);
       parsedData = filterEmptyStringsFromArray(parsedData);
       parsedData = filterCommentsFromArray(parsedData);
       return parsedData;
-    }
-
-    const intervalId = setInterval(() => {
-      fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
-        .then(res => res.text())
-        .then(data => setServerMetrics(parseMetrics(data)))
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, []);
+  }
 
   const convertMetricsToArray = (metrics) => {
     return metrics.split("\n");
