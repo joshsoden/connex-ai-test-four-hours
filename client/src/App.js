@@ -5,7 +5,8 @@ function App() {
 
   const [serverTime, setServerTime] = useState(null);
   const [serverMetrics, setServerMetrics] = useState([]);
-  const timerMs = 30000;
+  const [serverError, setServerError] = useState(false);
+  const timerMs = 3000;
 
   useEffect(() => {
     function retrieveServerTime() {
@@ -14,13 +15,19 @@ function App() {
       .then((data) => {
         let epochTime = JSON.parse(data).epoch;
         setServerTime(epochTime);
+        setServerError(false);
+      })
+      .catch(err => {
+        console.log("Error retrieving data");
+        setServerError(true);
       });
     }
 
     function retrieveServerMetrics() {
       fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
         .then(res => res.text())
-        .then(data => setServerMetrics(parseMetrics(data)));
+        .then(data => setServerMetrics(parseMetrics(data)))
+        .catch(err => {});
     }
 
     function parseMetrics(metrics) {
@@ -62,6 +69,7 @@ function App() {
             <h2>Server Information</h2>
             <p>Server time: {serverTime}</p>
             <p className="large">00:00:00</p>
+            {serverError && <p>Error retrieving data. Trying in 30s...</p>}
           </div>
         </section>
 
