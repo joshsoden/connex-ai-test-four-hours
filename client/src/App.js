@@ -6,10 +6,14 @@ function App() {
   const [serverTime, setServerTime] = useState(null);
   const [serverMetrics, setServerMetrics] = useState([]);
   const [serverError, setServerError] = useState(false);
+  const [timeLoading, setTimeLoading] = useState(false);
+  const [metricsLoading, setMetricsLoading] = useState(false);
   const timerMs = 3000;
 
   useEffect(() => {
     function retrieveServerTime() {
+      setTimeLoading(true);
+      console.log("loading...");
       fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
       .then(response => response.text())
       .then((data) => {
@@ -20,14 +24,24 @@ function App() {
       .catch(err => {
         console.log("Error retrieving data");
         setServerError(true);
+      })
+      .finally(() => {
+        console.log("Loading complete!");
+        setTimeLoading(false);
       });
     }
 
     function retrieveServerMetrics() {
+      setMetricsLoading(true);
+      console.log("loading...");
       fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
         .then(res => res.text())
         .then(data => setServerMetrics(parseMetrics(data)))
-        .catch(err => {});
+        .catch(err => {})
+        .finally(() => {
+          console.log("Loading complete!");
+          setMetricsLoading(false);
+        });
     }
 
     function parseMetrics(metrics) {
@@ -67,9 +81,15 @@ function App() {
         <section className="light">
           <div className="content">
             <h2>Server Information</h2>
-            <p>Server time: {serverTime}</p>
-            <p className="large">00:00:00</p>
-            {serverError && <p>Error retrieving data. Trying in 30s...</p>}
+            {timeLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <div>
+                <p>Server time: {serverTime}</p>
+                <p className="large">00:00:00</p>  
+                {serverError && <p>Error retrieving data. Trying in 30s...</p>}
+              </div>
+            )}
           </div>
         </section>
 
@@ -77,9 +97,15 @@ function App() {
           <div className="content">
             <h2>Server response</h2>
             <div className="code-block">
-              {serverMetrics.map((metric) => (
-                <p>{metric}</p>
-              ))}
+              {metricsLoading ? (
+                <div><p>Loading...</p></div>
+              ) : (
+                <div>
+                  {serverMetrics.map((metric) => (
+                    <p>{metric}</p>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </section>
