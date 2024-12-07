@@ -5,14 +5,19 @@ function App() {
 
   const [serverTime, setServerTime] = useState(null);
   const [serverMetrics, setServerMetrics] = useState([]);
+  const [requestTimer, setRequestTimer] = useState();
 
   useEffect(() => {
-    fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
-      .then(response => response.text())
-      .then((data) => {
-        let epochTime = JSON.parse(data).epoch;
-        setServerTime(epochTime);
-      })
+    const intervalId = setInterval(() => {
+      fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
+        .then(response => response.text())
+        .then((data) => {
+          let epochTime = JSON.parse(data).epoch;
+          setServerTime(epochTime);
+        })
+    }, 5000);
+    
+    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
@@ -23,9 +28,13 @@ function App() {
       return parsedData;
     }
 
-    fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
-      .then(res => res.text())
-      .then(data => setServerMetrics(parseMetrics(data)))
+    const intervalId = setInterval(() => {
+      fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
+        .then(res => res.text())
+        .then(data => setServerMetrics(parseMetrics(data)))
+    }, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const convertMetricsToArray = (metrics) => {
