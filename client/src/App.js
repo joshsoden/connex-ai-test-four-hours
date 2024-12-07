@@ -8,6 +8,28 @@ function App() {
   const timerMs = 30000;
 
   useEffect(() => {
+    function retrieveServerTime() {
+      fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
+      .then(response => response.text())
+      .then((data) => {
+        let epochTime = JSON.parse(data).epoch;
+        setServerTime(epochTime);
+      });
+    }
+
+    function retrieveServerMetrics() {
+      fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
+        .then(res => res.text())
+        .then(data => setServerMetrics(parseMetrics(data)));
+    }
+
+    function parseMetrics(metrics) {
+      let parsedData = convertMetricsToArray(metrics);
+      parsedData = filterEmptyStringsFromArray(parsedData);
+      parsedData = filterCommentsFromArray(parsedData);
+      return parsedData;
+    }
+
     const intervalId = setInterval(() => {
       retrieveServerTime();
       retrieveServerMetrics();
@@ -15,28 +37,6 @@ function App() {
 
     return () => clearInterval(intervalId);
   }, []);
-
-  const retrieveServerTime = () => {
-    fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
-    .then(response => response.text())
-    .then((data) => {
-      let epochTime = JSON.parse(data).epoch;
-      setServerTime(epochTime);
-    })
-  }
-
-  const retrieveServerMetrics = () => {
-    fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
-        .then(res => res.text())
-        .then(data => setServerMetrics(parseMetrics(data)));
-  }
-
-  const parseMetrics = (metrics) => {
-    let parsedData = convertMetricsToArray(metrics);
-      parsedData = filterEmptyStringsFromArray(parsedData);
-      parsedData = filterCommentsFromArray(parsedData);
-      return parsedData;
-  }
 
   const convertMetricsToArray = (metrics) => {
     return metrics.split("\n");
