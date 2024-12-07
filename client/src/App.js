@@ -5,13 +5,13 @@ function App() {
 
   const [serverTime, setServerTime] = useState(null);
   const [serverMetrics, setServerMetrics] = useState([]);
-  const [requestTimer, setRequestTimer] = useState();  
+  const timerMs = 30000;
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       retrieveServerTime();
       retrieveServerMetrics();
-    }, 5000);
+    }, timerMs);
 
     return () => clearInterval(intervalId);
   }, []);
