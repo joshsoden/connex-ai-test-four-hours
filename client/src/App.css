@@ -39,6 +39,7 @@ main {
       padding: 24px;
       height: 400px;
       overflow: scroll;
+      width: 50%;
 
       p {
         font-size: 12px;

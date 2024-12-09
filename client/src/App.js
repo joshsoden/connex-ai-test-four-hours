@@ -81,15 +81,14 @@ function App() {
         <section className="light">
           <div className="content">
             <h2>Server Information</h2>
-            {timeLoading ? (
-              <p>Loading...</p>
-            ) : (
-              <div>
+            <div>
+              {timeLoading ? (
+                <p>Server time: Loading...</p>
+              ) : (
                 <p>Server time: {serverTime}</p>
-                <p className="large">00:00:00</p>  
-                {serverError && <p>Error retrieving data. Trying in 30s...</p>}
-              </div>
-            )}
+              )} 
+              {serverError && <p>Error retrieving data. Trying in 30s...</p>}
+            </div>
           </div>
         </section>
 
@@ -98,7 +97,7 @@ function App() {
             <h2>Server response</h2>
             <div className="code-block">
               {metricsLoading ? (
-                <div><p>Loading...</p></div>
+                <div><p>Loading metrics...</p></div>
               ) : (
                 <div>
                   {serverMetrics.map((metric) => (
