@@ -37,6 +37,8 @@ main {
       background: black;
       color: white;
       padding: 24px;
+      height: 400px;
+      overflow: scroll;
       
 
       p {
