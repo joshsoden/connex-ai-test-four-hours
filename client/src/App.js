@@ -8,7 +8,8 @@ function App() {
   const [serverError, setServerError] = useState(false);
   const [timeLoading, setTimeLoading] = useState(false);
   const [metricsLoading, setMetricsLoading] = useState(false);
-  const timerMs = 3000;
+  const [timer, setTimer] = useState(0);
+  const timerMs = 30000;
 
   useEffect(() => {
     function retrieveServerTime() {
@@ -19,6 +20,7 @@ function App() {
       .then((data) => {
         let epochTime = JSON.parse(data).epoch;
         setServerTime(epochTime);
+        setTimer(0);
         setServerError(false);
       })
       .catch(err => {
@@ -59,6 +61,23 @@ function App() {
     return () => clearInterval(intervalId);
   }, []);
 
+  // For the timer
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer(prevTimer => prevTimer + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+  
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+  }
+
   const convertMetricsToArray = (metrics) => {
     return metrics.split("\n");
   }
@@ -88,6 +107,7 @@ function App() {
                 <p>Server time: {serverTime}</p>
               )} 
               {serverError && <p>Error retrieving data. Trying in 30s...</p>}
+              <p class="large">{formatTime(timer)}</p>
             </div>
           </div>
         </section>
