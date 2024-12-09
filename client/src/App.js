@@ -9,7 +9,7 @@ function App() {
   const [timeLoading, setTimeLoading] = useState(false);
   const [metricsLoading, setMetricsLoading] = useState(false);
   const [timer, setTimer] = useState(0);
-  const timerMs = 3000;
+  const timerMs = 30000;
 
   useEffect(() => {
     function retrieveServerTime() {
@@ -20,6 +20,7 @@ function App() {
       .then((data) => {
         let epochTime = JSON.parse(data).epoch;
         setServerTime(epochTime);
+        setTimer(0);
         setServerError(false);
       })
       .catch(err => {
