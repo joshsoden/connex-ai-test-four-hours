@@ -53,9 +53,15 @@ function App() {
       return parsedData;
     }
 
-    const intervalId = setInterval(() => {
+    function retrieveServerMetricsAndTime() {
       retrieveServerTime();
       retrieveServerMetrics();
+    }
+
+    retrieveServerMetricsAndTime();
+
+    const intervalId = setInterval(() => {
+      retrieveServerMetricsAndTime();
     }, timerMs);
 
     return () => clearInterval(intervalId);
