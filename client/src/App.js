@@ -68,12 +68,13 @@ function App() {
       <main>
         <section className="light">
           <div className="content">
-            <TimeContainer />
+            <TimeContainer></TimeContainer>
           </div>
         </section>
 
         <section className="dark">
           <div className="content">
+            <MetricsContainer></MetricsContainer>
             <h2>Server response</h2>
             <div className="code-block">
               {metricsLoading ? (

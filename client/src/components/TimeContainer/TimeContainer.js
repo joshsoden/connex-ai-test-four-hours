@@ -1,5 +1,4 @@
 import { React, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import styles from './TimeContainer.module.css';
 
 function TimeContainer() {
@@ -7,7 +6,26 @@ function TimeContainer() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(0);
+
+  // For the timer
+  useEffect(() => {
+    setTimer(prevTimer => prevTimer + 1);
   
+    const interval = setInterval(() => {
+      setTimer(prevTimer => prevTimer + 1);
+    }, 1000);
+  
+    return () => clearInterval(interval);
+  }, []);
+  
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      retrieveServerTime();
+    }, process.env.REACT_APP_TIMER_MS);
+  
+    return () => clearInterval(intervalId);
+  }, []);
+
   const retrieveServerTime = () => {
     setLoading(true);
     fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
@@ -28,17 +46,6 @@ function TimeContainer() {
     });
   }
   
-   // For the timer
-   useEffect(() => {
-    setTimer(prevTimer => prevTimer + 1);
-  
-    const interval = setInterval(() => {
-      setTimer(prevTimer => prevTimer + 1);
-    }, 1000);
-  
-    return () => clearInterval(interval);
-  }, []);
-  
   const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -46,7 +53,6 @@ function TimeContainer() {
   
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
   }
-
 
   return (
     <div className={styles.TimeContainer}>
