@@ -19,6 +19,8 @@ function TimeContainer() {
   }, []);
   
   useEffect(() => {
+    retrieveServerTime();
+
     const intervalId = setInterval(() => {
       retrieveServerTime();
     }, process.env.REACT_APP_TIMER_MS);
