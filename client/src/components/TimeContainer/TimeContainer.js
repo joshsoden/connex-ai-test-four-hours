@@ -72,8 +72,4 @@ function TimeContainer() {
   )
 }
 
-TimeContainer.propTypes = {};
-
-TimeContainer.defaultProps = {};
-
 export default TimeContainer;
