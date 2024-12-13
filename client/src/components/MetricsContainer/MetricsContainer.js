@@ -56,8 +56,8 @@ function MetricsContainer() {
           <div><p>Loading metrics...</p></div>
         ) : (
           <div>
-            {serverMetrics.map((metric) => (
-              <p>{metric}</p>
+            {serverMetrics.map((metric, index) => (
+              <p key={index}>{metric}</p>
             ))}
           </div>
         )}
