@@ -49,7 +49,7 @@ function MetricsContainer() {
   }
 
   return (
-      <>
+    <div className="metrics-container">
       <h2>Server response</h2>
       <div className="code-block">
         {loading ? (
@@ -62,7 +62,7 @@ function MetricsContainer() {
           </div>
         )}
       </div>
-    </>
+    </div>
   )
 }
 
