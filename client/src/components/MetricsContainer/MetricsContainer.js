@@ -19,7 +19,7 @@ function MetricsContainer() {
     setLoading(true);
     console.log("loading...");
 
-    fetch('http://localhost:5001/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
+    fetch(process.env.REACT_APP_API_URL+'/metrics/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
       .then(res => res.text())
       .then(data => setServerMetrics(parseMetrics(data)))
       .catch(err => {})
