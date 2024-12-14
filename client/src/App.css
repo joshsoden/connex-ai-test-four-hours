@@ -18,7 +18,7 @@ main {
   
   section {
     height: 100%;
-    width: calc(100% - 128px);
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -33,18 +33,23 @@ main {
       background: burlywood;
     }
 
-    .code-block {
-      background: black;
-      color: white;
-      padding: 24px;
-      height: 400px;
-      overflow: scroll;
-      width: 50%;
-
-      p {
-        font-size: 12px;
-        font-family: 'Courier New', Courier, monospace;
-        font-weight: bold;
+    .metrics-container {
+      width: 400px;
+      overflow: hidden;
+      
+      .code-block {
+        box-sizing: border-box;
+        background: black;
+        color: white;
+        padding: 24px;
+        height: 400px;
+        overflow: scroll;
+        
+        p {
+          font-size: 12px;
+          font-family: 'Courier New', Courier, monospace;
+          font-weight: bold;
+        }
       }
     }
   }
