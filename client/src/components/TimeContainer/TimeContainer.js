@@ -30,7 +30,7 @@ function TimeContainer() {
 
   const retrieveServerTime = () => {
     setLoading(true);
-    fetch('http://localhost:5001/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
+    fetch(process.env.REACT_APP_API_URL+'/time/', {headers: {authorization: process.env.REACT_APP_ACCESS_TOKEN}})
     .then(response => response.text())
     .then((data) => {
       let epochTime = JSON.parse(data).epoch;
