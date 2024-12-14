@@ -66,7 +66,7 @@ function TimeContainer() {
         <p>Server time: {serverTime}</p>
       )} 
       {error && <p>Error retrieving data. Trying in 30s...</p>}
-      <p class="large">{formatTime(timer)}</p>
+      <p className="large">{formatTime(timer)}</p>
     </div>
   </div>
   )
